@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+.App {
+  text-align: center;
+  border-radius: 20px;
+  margin: 50px;
+  padding: 20px;
+  box-shadow: 0px 5px 20px 0px #00000055;
+}
+
+.App * {
+  font-family: 'Roboto', sans-serif;  
+}
+
+code {
+  background-color: #00000033;
+  padding: 5px;
+  border-radius: 4px;
+}
+
+input {
+  border-style: none;
+  border-radius: 0px;
+  border-width: 3px;
+  padding: 10px;
+  box-shadow: inset 0px 0px 0px 3px #00000033;
+}
+
+input:focus {
+  box-shadow: inset 0px 0px 0px 3px #AADDFFAA;
+}
+
+button {
+  border-style: none;
+  border-radius: 0px;
+  border-width: 3px;
+  padding: 10px;
+}
+
+button:focus {
+  box-shadow: inset 0px 0px 0px 3px #FFFFFFAA;
+}
+
+
+button.success {
+  background: rgb(34, 145, 58);
+  color: #FFFFFF;
+}
+button.success:hover {
+  background: rgb(48, 165, 73);
+}
+button.success:active {
+  background: rgb(21, 116, 41);
+}
+button.success:focus {
+  box-shadow: inset 0px 0px 0px 3px rgb(48, 165, 73);
+}
+
+button.warning {
+  background: rgb(255, 187, 0);
+  /* color: #FFFFFF; */
+}
+button.warning:hover {
+  background: rgb(255, 209, 83);
+}
+button.warning:active {
+  background: rgb(206, 152, 5);
+}
+button.warning:focus {
+  box-shadow: inset 0px 0px 0px 3px rgb(255, 209, 83);
+}
+
+button.danger {
+  background-color: #BB3333;
+  color: #FFFFFF;
+  /* background-color: #FFAFAA; */
+  /* border-color: #DD5955; */
+}
+button.danger:hover {
+  background: rgb(209, 81, 81);
+}
+button.danger:active {
+  background-color: #831414;
+}
+button.danger:focus {
+  box-shadow: inset 0px 0px 0px 3px rgb(209, 81, 81);
+}
