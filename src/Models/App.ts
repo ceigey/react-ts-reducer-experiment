@@ -1,13 +1,9 @@
 import { Option, none, some } from 'fp-ts/lib/Option'
 import { Lens } from 'monocle-ts'
-import { SetState, StateProps, Action, Action2, ChangeAction } from '../typings/Actions'
+import { SetState, StateProps } from '../Framework/State'
+import { action, action2, eventAction } from '../Framework/Actions'
 import { value } from '../Util/GetTargetValue'
 
-
-// We define our state here.
-// This is neater than defining it with the
-// App component, and can be imported
-// by child components sharing logic.
 export interface AppState {
   stats: {
     count: number
@@ -16,13 +12,6 @@ export interface AppState {
   greeting: Option<string>
 }
 
-// Defining AppState Lens
-// These Lenses let us *focus* (haha!)
-// on a single part of an record, and
-// modify the whole record immutably
-// without needing to touch the rest of it!
-// Read the original Scala docs:
-// https://julien-truffaut.github.io/Monocle/optics/lens.html
 const AppPath = Lens.fromPath<AppState>()
 const AppProp = Lens.fromProp<AppState>()
 
@@ -38,59 +27,39 @@ const Clicks =
 const Greeting =
   AppProp('greeting')
 
-// Actions go below
-// We then export them as an actions constant
 
-const incCountWithClicks: Action<AppState> =
-  setState => () =>
-    setState(prevState =>
-      Stats.modify(stats => ({
-        count: stats.count + 1,
-        clicks: stats.clicks + 1
-      })) (prevState)
-    )
+export const incCountWithClicks = action<AppState>(
+  Stats.modify(stats => ({
+    count: stats.count + 1,
+    clicks: stats.clicks + 1
+  }))
+)
 
-const addToCountWithClicks: Action2<AppState, number> =
-  setState => n => () =>
-    setState(prevState => 
-      Stats.modify(stats => ({
-        count: stats.count + n,
-        clicks: stats.clicks + 1
-      })) (prevState)
-    )
+export const addToCountWithClicks = action2<AppState, number>(
+  num =>
+    Stats.modify(stats => ({
+      count: stats.count + num,
+      clicks: stats.clicks + 1
+    }))
+)
 
-const resetCounter: Action<AppState> =
-  setState => () =>
-    setState(prevState =>
-      Count.modify(_ => 0) (prevState)
-    )
+export const resetCounter = action<AppState>(
+  Stats.modify(stats => ({
+    count: 0,
+    clicks: stats.clicks + 1
+  }))
+)
 
-const removeGreeting: Action<AppState> =
-  setState => () =>
-    setState(prevState =>
-      Greeting.modify(_ => none) (prevState)
-    )
+export const removeGreeting = action<AppState>(
+  Greeting.modify(_ => none)
+)
 
-const addGreeting: ChangeAction<AppState> =
-  setState => (e) => {
-    const str = value(e)
-    return setState(prevState =>
-      Greeting.modify(_ => some(str)) (prevState)
-    )
+export const addGreeting = eventAction<AppState, React.ChangeEvent<HTMLInputElement>>(
+  event => {
+    const value = event.target.value
+    return Greeting.modify(_ => value.length ? some(value) : none)
   }
-
-const action =
-  <T>(logic: (prevState: T) => T) => (setState: SetState<T>) => () =>
-    setState(logic)
-
-const action2 =
-  <T, U>(logic: (prevState: T) => T) => (setState: SetState<T>) => (x: U) => () =>
-    setState(logic)
-
-const action2Demo =
-  action2<AppState, number>(prevState =>
-    prevState
-  )
+)
 
 export const actions = {
   incCountWithClicks,
