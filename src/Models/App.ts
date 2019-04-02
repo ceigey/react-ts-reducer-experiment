@@ -35,6 +35,13 @@ export const incCountWithClicks = action<AppState>(
   }))
 )
 
+export const logState = action<AppState>(
+  prevState => {
+    console.log(prevState)
+    return prevState
+  }
+)
+
 export const addToCountWithClicks = action2<AppState, number>(
   num =>
     Stats.modify(stats => ({
