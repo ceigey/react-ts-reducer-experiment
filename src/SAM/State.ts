@@ -1,5 +1,6 @@
-import { Option } from 'fp-ts/lib/Option'
+import { Option, none } from 'fp-ts/lib/Option'
 import { Dog } from '../Models/Dog'
+
 
 export type State = {
   stats: {
@@ -14,4 +15,19 @@ export type State = {
   }
   note: string
   dogs: Array<Dog>
+}
+
+
+export const defaultState: State = {
+  stats: {
+    count: 0,
+    clicks: 0,
+  },
+  greeter: none,
+  user: {
+    name: none,
+    title: none,
+  },
+  note: '',
+  dogs: []
 }
