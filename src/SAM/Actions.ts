@@ -8,7 +8,9 @@ import { Dog } from '../Models/Dog'
  * instead of its broader type (e.g. :string)
  * @param {string} key this key will have its literal type inferred
  */
-const type = <T extends string>(key: T): { type: T } => ({ type: key })
+// const type = <T extends string>(key: T): { type: T } => ({ type: key })
+// const s = <T extends string>(key: T): T => key
+const action = <T extends string, P extends {}>(key: T, params: P): { type: T } & P => ({ type: key, ...params})
 
 /**
  * An analogue of keyof, except for maps of functions
@@ -19,11 +21,12 @@ const type = <T extends string>(key: T): { type: T } => ({ type: key })
  * for multiple functions at a time.
  * Useful for typing reducers.
  */
-type ReturnValueOf<T extends { [x: string]: (...args: any[]) => any }> = ReturnType<T[keyof T]>
+type ReturnValueUnion<T extends { [x: string]: (...args: any[]) => any }> = ReturnType<T[keyof T]>
+type ReturnValueMap<T extends { [x: string]: (...args: any[]) => any }> = { [K in keyof T]: ReturnType<T[K]> }
 
-
+/*
 const incrementBy = (amt: number) => {
-  return { ...type('incrementBy'), amt }
+  return { type: s('incrementBy'), amt }
 }
 const decrementBy = (amt: number) => {
   return { ...type('decrementBy'), amt }
@@ -40,6 +43,26 @@ const setUserTitle = (title: string) => {
 const setDogs = (dogs: Array<Dog>) => {
   return { ...type('setDogs'), dogs }
 }
+*/
+
+const incrementBy = (amt: number) =>
+  action('incrementBy', { amt })
+
+const decrementBy = (amt: number) =>
+  action('decrementBy', { amt })
+
+const setGreeting = (greeting: string) =>
+  action('setGreeting', { greeting })
+
+const setUserName = (name: string) =>
+  action('setUserName', { name })
+
+const setUserTitle = (title: string) =>
+  action('setUserTitle', { title })
+
+const setDogs = (dogs: Array<Dog>) =>
+  action('setDogs', { dogs })
+
 
 export const actions = {
   incrementBy,
@@ -51,8 +74,8 @@ export const actions = {
 }
 
 export default actions
-export type Actions = ReturnValueOf<typeof actions>
-
+export type Actions = ReturnValueUnion<typeof actions>
+export type Types = ReturnValueMap<typeof actions>
 
 // type Actions2 =
 //   | ReturnType<typeof incrementBy>

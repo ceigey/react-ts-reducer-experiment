@@ -1,6 +1,6 @@
 {
     "include": [
-        "./src/*"
+        "./src/**/*"
     ],
     "compilerOptions": {
         "lib": [
@@ -8,6 +8,7 @@
             "es2015"
         ],
         "jsx": "react",
-        "strict": true
+        "strict": true,
+        "strictNullChecks": true
     }
 }
